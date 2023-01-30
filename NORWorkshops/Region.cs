@@ -1,27 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NORWorkshops
 {
     public class Region
     {
-        public string AdministrativRegion { get; set; }
-        public string Postnumre { get; set; }
+        public string Name { get; set; }
+        public List<PostRange> Ranges { get; set; }
 
-        public Region(){}
-
-        public Region(string region, string postnumre)
+        public Region(RawRegion region)
         {
-            AdministrativRegion = region;
-            Postnumre = postnumre;
+            Name = region.AdministrativRegion;
+            Ranges = ConvertToRangeList(region.Postnumre);
         }
 
-        public void Show()
+        private List<PostRange> ConvertToRangeList(string ranges)
         {
-            Console.WriteLine($"Fylke: {AdministrativRegion} - Postnumre: {Postnumre}");
+            var rangesList = new List<PostRange>();
+            if (ranges.Contains(','))
+            {
+                var rangesStringArr = ranges.Split(',');
+                rangesList.AddRange(rangesStringArr
+                    .Select(range => range.Split('-'))
+                    .Select(rangeValues => new PostRange(Convert.ToInt32(rangeValues[0]), Convert.ToInt32(rangeValues[1]))));
+            }
+            else
+            {
+                var rangeValues = ranges.Split('-');
+                rangesList.Add(new PostRange(Convert.ToInt32(rangeValues[0]), Convert.ToInt32(rangeValues[1])));
+            }
+            return rangesList;
         }
     }
 }
