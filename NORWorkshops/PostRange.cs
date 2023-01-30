@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace NORWorkshops
 {
     public class PostRange
@@ -10,6 +12,11 @@ namespace NORWorkshops
         {
             MinValue = minValue;
             MaxValue = maxValue;
+        }
+
+        public void Show()
+        {
+            Console.WriteLine($"{MinValue} - {MaxValue}");
         }
     }
 }

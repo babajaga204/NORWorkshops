@@ -18,7 +18,6 @@ namespace NORWorkshops
             AdministrativRegion = region;
             Postnumre = postnumre;
         }
-
         public void Show()
         {
             Console.WriteLine($"Fylke: {AdministrativRegion} - Postnumre: {Postnumre}");

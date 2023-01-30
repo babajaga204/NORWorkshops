@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace NORWorkshops
 {
@@ -16,6 +12,7 @@ namespace NORWorkshops
         {
             Workshops = rawWorkshops;
             Regions = GetFormattedRegions(rawRegions);
+            SearchResults = new List<Workshop>();
         }
         private List<Region> GetFormattedRegions(List<RawRegion> rawRegions)
         {
@@ -47,7 +44,7 @@ namespace NORWorkshops
                 Console.WriteLine(region.Name);
                 region.Ranges.ForEach(range =>
                 {
-                    Console.WriteLine($"{range.MinValue} - {range.MaxValue}");
+                    range.Show();
                 });
             });
         }
