@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-
+﻿
 namespace NORWorkshops
 {
 
@@ -41,17 +33,31 @@ namespace NORWorkshops
 
         public Workshop(){}
 
+        public void Show()
+        {
+            Console.WriteLine(Bedriftsnavn);
+            Console.WriteLine(Adresse);
+            Console.WriteLine(Postnummer);
+            Console.WriteLine(Poststed);
+            Console.WriteLine(Godkjenningstyper);
+            Console.WriteLine(Godkjenningsnummer);
+            Console.WriteLine(Organisasjonsnummer);
+        }
+
         public int GetPostnummer()
         {
+            if (Postnummer == null) return 0;
             var postnummerStr = Convert.ToString(Postnummer);
-            if (postnummerStr.Length == 3)
+            if (postnummerStr!.Length == 3)
             {
                 postnummerStr = "0" + postnummerStr;
             }
-            if (postnummerStr.Length == 2)
+
+            if (postnummerStr!.Length == 2)
             {
                 postnummerStr = "00" + postnummerStr;
             }
+
             return Convert.ToInt32(postnummerStr);
         }
     }

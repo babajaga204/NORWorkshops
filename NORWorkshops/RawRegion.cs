@@ -8,8 +8,8 @@ namespace NORWorkshops
 {
     public class RawRegion
     {
-        public string AdministrativRegion { get; set; }
-        public string Postnumre { get; set; }
+        public string? AdministrativRegion { get; set; }
+        public string? Postnumre { get; set; }
 
         public RawRegion(){}
 

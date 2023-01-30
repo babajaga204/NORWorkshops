@@ -4,13 +4,13 @@ namespace NORWorkshops
 {
     public class Region
     {
-        public string Name { get; set; }
-        public List<PostRange> Ranges { get; set; }
+        public string? Name { get; set; }
+        public List<PostRange> Ranges { get; set; } = null!;
 
         public Region(RawRegion region)
         {
             Name = region.AdministrativRegion;
-            Ranges = ConvertToRangeList(region.Postnumre);
+            if (region.Postnumre != null) Ranges = ConvertToRangeList(region.Postnumre);
         }
 
         private List<PostRange> ConvertToRangeList(string ranges)

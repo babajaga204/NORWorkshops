@@ -1,16 +1,17 @@
 ﻿using System.Text.Json;
 using NORWorkshops;
 
-//Serialize WorkshopsJSON into RawWorkshop class
+//Serialize WorkshopsJSON into Workshop class
 var workshopPath = @"C:\Users\simen\github\NORWorkshops\NORWorkshops\verkstedNEW.json";
 var workshopJson = File.ReadAllText(workshopPath);
 var options = new JsonSerializerOptions();
-var workshops = JsonSerializer.Deserialize<RawWorkshop[]>(workshopJson,options);
+List<Workshop> workshops = JsonSerializer.Deserialize<Workshop[]>(workshopJson,options).ToList();
 
 //Serialize RegionJSON into RawRegion class
 var regionNumbersPath = @"C:\Users\simen\github\NORWorkshops\NORWorkshops\regionsnummer_Norge.json";
 var regionNumbersJson = File.ReadAllText(regionNumbersPath);
 var optionsRegion = new JsonSerializerOptions();
-var regions = JsonSerializer.Deserialize<RawRegion[]>(regionNumbersJson, optionsRegion);
+List<RawRegion> regions = JsonSerializer.Deserialize<RawRegion[]>(regionNumbersJson, optionsRegion).ToList();
 
-foreach (var region in regions) {region.Show(); Console.WriteLine();}
+var container = new Container(workshops, regions);
+container.ShowAllWorkshops();
