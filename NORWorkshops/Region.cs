@@ -30,5 +30,13 @@ namespace NORWorkshops
             }
             return rangesList;
         }
+        public void Show()
+        {
+            Console.WriteLine("Navn: " + Name);
+            Ranges.ForEach(range =>
+            {
+                Console.WriteLine("Postnumre: " + range.MinValue + "-" + range.MaxValue);
+            });
+        }
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Specialized;
+using System.Text.Json;
 using NORWorkshops;
+Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 //Serialize WorkshopsJSON into Workshop class
 var workshopPath = @"C:\Users\simen\github\NORWorkshops\NORWorkshops\verkstedNEW.json";
@@ -14,4 +16,10 @@ var optionsRegion = new JsonSerializerOptions();
 List<RawRegion> regions = JsonSerializer.Deserialize<RawRegion[]>(regionNumbersJson, optionsRegion).ToList();
 
 var container = new Container(workshops, regions);
-container.ShowAllWorkshops();
+
+while (true)
+{
+    Console.WriteLine("Tast inn nummeret som representerer fylket du vil søke i.");
+    container.ShowRegionNamesForCommand();
+    Console.ReadLine();
+}

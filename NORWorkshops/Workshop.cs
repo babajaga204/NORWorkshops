@@ -35,13 +35,11 @@ namespace NORWorkshops
 
         public void Show()
         {
-            Console.WriteLine(Bedriftsnavn);
-            Console.WriteLine(Adresse);
-            Console.WriteLine(Postnummer);
-            Console.WriteLine(Poststed);
-            Console.WriteLine(Godkjenningstyper);
-            Console.WriteLine(Godkjenningsnummer);
-            Console.WriteLine(Organisasjonsnummer);
+            Console.WriteLine($"Navn: {Bedriftsnavn}, {Organisasjonsnummer}");
+            Console.WriteLine($"Adresse: {Adresse}, {Poststed}, {GetPostnummer()}");
+            Console.WriteLine($"Godkjenningstyper: {Godkjenningstyper}");
+            Console.WriteLine($"Godkjenningsnummer: {Godkjenningsnummer}");
+            for (var i = 0; i < Console.WindowWidth; i++) Console.Write('*');
         }
 
         public int GetPostnummer()
@@ -59,6 +57,18 @@ namespace NORWorkshops
             }
 
             return Convert.ToInt32(postnummerStr);
+        }
+
+        public List<string>? GetGodkjenningstyper()
+        {
+            var formattedGodkjenningstyper = new List<string>();
+            var godkjenningstyper = Godkjenningstyper?.Split(',').ToList();
+            godkjenningstyper.ForEach(item =>
+            {
+                var trimmedStr = item.Trim();
+                formattedGodkjenningstyper.Add(trimmedStr);
+            });
+            return formattedGodkjenningstyper;
         }
     }
 }

@@ -18,5 +18,10 @@ namespace NORWorkshops
         {
             Console.WriteLine($"{MinValue} - {MaxValue}");
         }
+
+        public bool CheckIfInRange(int workshopZip)
+        {
+            return workshopZip >= MinValue && workshopZip <= MaxValue;
+        }
     }
 }
