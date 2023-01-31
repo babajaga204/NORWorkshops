@@ -1,5 +1,6 @@
 ﻿
 
+using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 
 namespace NORWorkshops
@@ -18,6 +19,7 @@ namespace NORWorkshops
             SearchResults = new List<Workshop>();
             Godkjenningstyper = GetGodkjenningstyper(rawWorkshops);
             ValgteGodkjenningstyper = new List<string>();
+
             FormatAllWorkshopGodkjenningstyper();
             Godkjenningstyper.ForEach(x => { ValgteGodkjenningstyper.Add(string.Empty); });
         }
@@ -49,19 +51,21 @@ namespace NORWorkshops
         {
             while (true)
             {
-                var input = ShowRegionNamesForCommand();
+                var input = HandleRegionNamesForCommand();
                 SetSearchResultsRegion(input);
-                ShowGodkjenningstyperForCommand();
+                HandleGodkjenningstyperForCommand();
+                ShowFinalSearchResults();
                 break;
             }
         }
 
-        private void SetValgteGodkjenningstyper(int input)
+        private void SetValgtGodkjenningstype(int input)
         {
-            ValgteGodkjenningstyper[input-1] = Godkjenningstyper[input-1];
+            if (!ValgteGodkjenningstyper.Contains(Godkjenningstyper[input - 1])) 
+                ValgteGodkjenningstyper[input - 1] = Godkjenningstyper[input - 1];
         }
 
-        private void ShowGodkjenningstyperForCommand()
+        private void HandleGodkjenningstyperForCommand()
         {
             while (true)
             {
@@ -72,17 +76,31 @@ namespace NORWorkshops
                 var command = 1;
                 foreach (var type in Godkjenningstyper)
                 {
-                    Console.WriteLine($"{command.ToString(),-2} - {type} {CheckEmptyAndShowValue(command),50}");
+                    Console.WriteLine($"{command.ToString(),-2} - {type} {CheckEmptyAndShowValue(command),40}");
                     command++;
                 }
                 Console.WriteLine();
                 var inputStr = Console.ReadLine();
                 var input = Convert.ToInt32(inputStr);
-                if (inputStr != null && IsNum(inputStr) && IsNumValid(Godkjenningstyper, input)) continue;
-                Console.WriteLine("Vennligst tast inn et gyldig tall");
-                Thread.Sleep(3000);
-                break;
+                if (inputStr == null || !IsNum(inputStr) || !IsNumValid(Godkjenningstyper, input))
+                {
+                    if (inputStr!.ToLower() == "g")
+                    {
+                        break;
+                    }
+                    Console.WriteLine("Vennligst tast inn et gyldig tall");
+                    Thread.Sleep(3000);
+                }
+                else
+                {
+                    SetValgtGodkjenningstype(input);
+                }
             }
+        }
+
+        private void ShowFinalSearchResults()
+        {
+            //TODO: Return a list of workshops (Taken from SearchResults) that are filtered with ValgteGodkjenningstyper.
         }
 
         private string CheckEmptyAndShowValue(int command)
@@ -90,7 +108,7 @@ namespace NORWorkshops
             return ValgteGodkjenningstyper[command - 1] == string.Empty ? "" : ValgteGodkjenningstyper[command - 1];
         }
 
-        public int ShowRegionNamesForCommand()
+        public int HandleRegionNamesForCommand()
         {
            while (true) 
            {
@@ -116,7 +134,6 @@ namespace NORWorkshops
                 {
                     return input;
                 }
-
            }
         }
         private int GetCount(List<PostRange> regionRanges)
