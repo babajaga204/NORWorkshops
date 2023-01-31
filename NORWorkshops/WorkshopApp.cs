@@ -19,6 +19,7 @@ namespace NORWorkshops
             Godkjenningstyper = GetGodkjenningstyper(rawWorkshops);
             ValgteGodkjenningstyper = new List<string>();
             FormatAllWorkshopGodkjenningstyper();
+            Godkjenningstyper.ForEach(x => { ValgteGodkjenningstyper.Add(string.Empty); });
         }
         private List<string> GetGodkjenningstyper(List<Workshop> workshops)
         {
@@ -49,38 +50,71 @@ namespace NORWorkshops
             while (true)
             {
                 ShowRegionNamesForCommand();
-                string inputStr = Console.ReadLine();
-                int input = Convert.ToInt32(inputStr);
-                if (inputStr == null || !IsNum(inputStr) || !IsNumValid(Regions, input))
-                {
-                    Console.WriteLine("Vennligst tast inn et gyldig tall");
-                    Thread.Sleep(3000);
-                    continue;
-                }
-                else
-                {
-                    SetSearchResults(input);
-                    ShowGodkjenningstyperForCommand();
-                }
+                SetSearchResults(input);
+                ShowGodkjenningstyperForCommand();
+                var inputStr2 = Console.ReadLine();
+                var input2 = Convert.ToInt32(inputStr2);
+                SetValgteGodkjenningstyper(input2);
                 break;
             }
         }
 
+        private void SetValgteGodkjenningstyper(int input)
+        {
+            ValgteGodkjenningstyper[input-1] = Godkjenningstyper[input-1];
+        }
+
         private void ShowGodkjenningstyperForCommand()
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Tast inn nummeret som representerer godkjenningstypen du vil ha med i søket.");
+                Console.WriteLine("Søkemotoren vil ta med alle verksted som har en eller fler av godkjenningstypene");
+                Console.WriteLine();
+                var command = 1;
+                foreach (var type in Godkjenningstyper)
+                {
+                    Console.WriteLine($"{command.ToString(),-2} - {type} {CheckEmptyAndShowValue(command),50}");
+                    command++;
+                }
+                Console.WriteLine();
+                var inputStr = Console.ReadLine();
+                var input = Convert.ToInt32(inputStr);
+                if (inputStr != null && IsNum(inputStr) && IsNumValid(Godkjenningstyper, input)) continue;
+                Console.WriteLine("Vennligst tast inn et gyldig tall");
+                Thread.Sleep(3000);
+                break;
+            }
+        }
+
+        private string CheckEmptyAndShowValue(int command)
+        {
+            return ValgteGodkjenningstyper[command - 1] == string.Empty ? "" : ValgteGodkjenningstyper[command - 1];
         }
 
         public void ShowRegionNamesForCommand()
         {
-            Console.Clear();
-            Console.WriteLine("Tast inn nummeret som representerer fylket du vil søke i.");
-            var command = 1;
-            foreach (var region in Regions)
-            {
-                Console.WriteLine($"{command} - {region.Name} ({GetCount(region.Ranges)})");
-                command++;
-            }
+           while (true) 
+           {
+                Console.Clear();
+                Console.WriteLine("Tast inn nummeret som representerer fylket du vil søke i.");
+                Console.WriteLine();
+                var command = 1;
+                foreach (var region in Regions)
+                {
+                    Console.WriteLine($"{command.ToString(),-2} - {region.Name} ({GetCount(region.Ranges)})");
+                    command++;
+                }
+
+                Console.WriteLine();
+                var inputStr = Console.ReadLine();
+                var input = Convert.ToInt32(inputStr);
+                if (inputStr != null && IsNum(inputStr) && IsNumValid(Regions, input)) return;
+                Console.WriteLine("Vennligst tast inn et gyldig tall");
+                Thread.Sleep(3000);
+                break;
+           }
         }
         private int GetCount(List<PostRange> regionRanges)
         {
