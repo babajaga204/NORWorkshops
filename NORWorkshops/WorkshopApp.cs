@@ -49,12 +49,9 @@ namespace NORWorkshops
         {
             while (true)
             {
-                ShowRegionNamesForCommand();
-                SetSearchResults(input);
+                var input = ShowRegionNamesForCommand();
+                SetSearchResultsRegion(input);
                 ShowGodkjenningstyperForCommand();
-                var inputStr2 = Console.ReadLine();
-                var input2 = Convert.ToInt32(inputStr2);
-                SetValgteGodkjenningstyper(input2);
                 break;
             }
         }
@@ -93,7 +90,7 @@ namespace NORWorkshops
             return ValgteGodkjenningstyper[command - 1] == string.Empty ? "" : ValgteGodkjenningstyper[command - 1];
         }
 
-        public void ShowRegionNamesForCommand()
+        public int ShowRegionNamesForCommand()
         {
            while (true) 
            {
@@ -110,10 +107,16 @@ namespace NORWorkshops
                 Console.WriteLine();
                 var inputStr = Console.ReadLine();
                 var input = Convert.ToInt32(inputStr);
-                if (inputStr != null && IsNum(inputStr) && IsNumValid(Regions, input)) return;
-                Console.WriteLine("Vennligst tast inn et gyldig tall");
-                Thread.Sleep(3000);
-                break;
+                if (inputStr == null || !IsNum(inputStr) || !IsNumValid(Regions, input))
+                {
+                    Console.WriteLine("Vennligst tast inn et gyldig tall");
+                    Thread.Sleep(3000);
+                }
+                else
+                {
+                    return input;
+                }
+
            }
         }
         private int GetCount(List<PostRange> regionRanges)
@@ -122,7 +125,7 @@ namespace NORWorkshops
                 .Sum(range => Workshops
                 .Count(workshop => workshop.GetPostnummer() >= range.MinValue && workshop.GetPostnummer() <= range.MaxValue));
         }
-        public void SetSearchResults(int fylkesIndex)
+        public void SetSearchResultsRegion(int fylkesIndex)
         {
             SearchResults = new List<Workshop>(); // Pass på å fjerne!!!
             var paramRegion = Regions[fylkesIndex - 1];
