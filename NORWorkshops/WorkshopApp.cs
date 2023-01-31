@@ -74,7 +74,7 @@ namespace NORWorkshops
                 var command = 1;
                 foreach (var type in Godkjenningstyper)
                 {
-                    Console.WriteLine($"{command.ToString(),-2} - {type} {CheckEmptyAndShowValue(command),40}");
+                    Console.WriteLine($"{command.ToString(),2} - {type} {CheckEmptyAndShowValue(command),40}");
                     command++;
                 }
                 Console.WriteLine();
@@ -96,8 +96,16 @@ namespace NORWorkshops
         private void ShowFinalSearchResults()
         {
             //TODO: Return a list of workshops (Taken from SearchResults) that are filtered with ValgteGodkjenningstyper.
+            foreach (var type in ValgteGodkjenningstyper)
+            {
+                var filteredSearchList =
+                    SearchResults.Where(workshop => workshop.GetGodkjenningstyper()!.Contains(type));
+                foreach (var workshop in filteredSearchList)
+                {
+                    workshop.Show();
+                }
+            }
         }
-
         private string CheckEmptyAndShowValue(int command)
         {
             return ValgteGodkjenningstyper[command - 1] == string.Empty ? "" : ValgteGodkjenningstyper[command - 1];
