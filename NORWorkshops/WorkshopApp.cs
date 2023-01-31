@@ -1,6 +1,4 @@
-﻿
-
-using System.ComponentModel.Design;
+﻿using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 
 namespace NORWorkshops
@@ -81,13 +79,10 @@ namespace NORWorkshops
                 }
                 Console.WriteLine();
                 var inputStr = Console.ReadLine();
+                if (inputStr!.ToLower() == "g") break;
                 var input = Convert.ToInt32(inputStr);
                 if (inputStr == null || !IsNum(inputStr) || !IsNumValid(Godkjenningstyper, input))
                 {
-                    if (inputStr!.ToLower() == "g")
-                    {
-                        break;
-                    }
                     Console.WriteLine("Vennligst tast inn et gyldig tall");
                     Thread.Sleep(3000);
                 }
